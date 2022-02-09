@@ -1,0 +1,104 @@
+PUT seoul_sample
+{ 
+  "settings":{ 
+    "analysis":{ 
+      "tokenizer":{ 
+        "korean_nori_tokenizer":{ 
+          "type":"nori_tokenizer", 
+          "decompound_mode":"mixed"
+        } 
+      }, 
+      "analyzer":{ 
+        "nori_analyzer":{ 
+          "type":"custom",
+          "tokenizer":"korean_nori_tokenizer",
+          "filter":[
+            "nori_posfilter",
+            "syn_test"
+          ]
+        },
+        "spell-sugesstion":{ 
+          "type":"custom",
+          "tokenizer":"korean_nori_tokenizer",
+          "filter":[
+            "nori_posfilter",
+            "javacafe_spell"
+          ]
+        },
+        "koreng":{ 
+          "type":"custom",
+          "tokenizer":"korean_nori_tokenizer",
+          "filter":[
+            "nori_posfilter",
+            "javacafe_kor2eng"
+          ]
+        }
+      }, 
+      "filter": { 
+        "nori_posfilter": { 
+          "type": "nori_part_of_speech", 
+            "stoptags": [ 
+              "E",
+              "IC",
+              "J",
+              "MAG",
+              "MM",
+              "NA",
+              "NR",
+              "SC",
+              "SE",
+              "SF",
+              "SH",
+              "SL",
+              "SN",
+              "SP",
+              "SSC",
+              "SSO",
+              "SY",
+              "UNA",
+              "UNKNOWN",
+              "VA",
+              "VCN",
+              "VCP",
+              "VSV",
+              "VV",
+              "VX",
+              "XPN",
+              "XR",
+              "XSA",
+              "XSN",
+              "XSV"
+            ] 
+        },
+        "syn_test":{
+          "type" : "synonym",
+          "synonyms_path":"synonyms.txt"
+        } 
+      }
+    } 
+  },  
+  "mappings": {
+    "properties": { 
+      "Title": { 
+        "type": "text",
+        "fields": {
+          "nori_mixed": {
+            "type": "text",
+            "analyzer": "nori_analyzer",
+            "search_analyzer": "standard" 
+          },
+          "spell": {
+            "type": "text",
+            "analyzer": "spell-sugesstion",
+            "search_analyzer": "standard" 
+          },
+          "koreng": {
+            "type": "text",
+            "analyzer": "koreng",
+            "search_analyzer": "standard" 
+          }
+        } 
+      }
+    } 
+  } 
+}

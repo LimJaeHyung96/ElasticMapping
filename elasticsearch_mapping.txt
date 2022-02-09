@@ -1,0 +1,111 @@
+PUT public_metadata_sym
+{ 
+  "settings":{ 
+    "analysis":{ 
+      "tokenizer":{ 
+        "korean_nori_tokenizer":{ 
+          "type":"nori_tokenizer", 
+          "decompound_mode":"mixed"
+        } 
+      }, 
+      "analyzer":{ 
+        "nori_analyzer":{ 
+          "type":"custom",
+          "tokenizer":"korean_nori_tokenizer",
+          "filter":[
+            "nori_posfilter",
+            "syn_test"
+          ]
+        }
+      }, 
+      "filter": { 
+        "nori_posfilter": { 
+          "type": "nori_part_of_speech", 
+            "stoptags": [ 
+              "E",
+              "IC",
+              "J",
+              "MAG",
+              "MM",
+              "NA",
+              "NR",
+              "SC",
+              "SE",
+              "SF",
+              "SH",
+              "SL",
+              "SN",
+              "SP",
+              "SSC",
+              "SSO",
+              "SY",
+              "UNA",
+              "UNKNOWN",
+              "VA",
+              "VCN",
+              "VCP",
+              "VSV",
+              "VV",
+              "VX",
+              "XPN",
+              "XR",
+              "XSA",
+              "XSN",
+              "XSV"
+            ] 
+        },
+        "syn_test":{
+          "type" : "synonym",
+          "synonyms":[
+            "수도권 => 안경",
+            "몽타, 경찰" 
+          ]
+        } 
+      }
+    } 
+  },  
+  "mappings": {
+    "properties": { 
+      "Category": { 
+        "type": "text",
+        "fields": {
+          "nori_mixed": {
+            "type": "text",
+            "analyzer": "nori_analyzer",
+            "search_analyzer": "standard" 
+          } 
+        } 
+      },
+      "Title": { 
+        "type": "text",
+        "fields": {
+          "nori_mixed": {
+            "type": "text",
+            "analyzer": "nori_analyzer",
+            "search_analyzer": "standard" 
+          } 
+        } 
+      },
+      "Column": { 
+        "type": "text",
+        "fields": {
+          "nori_mixed": {
+            "type": "text",
+            "analyzer": "nori_analyzer",
+            "search_analyzer": "standard" 
+          } 
+        } 
+      },
+      "Explain": { 
+        "type": "text",
+        "fields": {
+          "nori_mixed": {
+            "type": "text",
+            "analyzer": "nori_analyzer",
+            "search_analyzer": "standard" 
+          } 
+        } 
+      }
+    } 
+  } 
+}
